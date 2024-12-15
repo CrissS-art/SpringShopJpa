@@ -60,7 +60,7 @@ public class SpringShopJpaApplication implements CommandLineRunner {
 //	    }
 //	 Exercice 1.2 : Trouver 2 moyens pour récupérer et afficher sur la console un article en base 
 //	 puis, dans un second temps, afficher tous les articles en base
-//	    for(Article article : articleRepository.searchArticles("As",500)) {
+//	    for(Article article : articleRepository.searchArticles2("As",500)) {
 //	    	System.out.println("1.2.1 : " + article);
 //	    }
 //	    for(Article article : articleRepository.searchArticlesById(6L)) {
@@ -108,50 +108,160 @@ public class SpringShopJpaApplication implements CommandLineRunner {
 //    	System.out.println(article);
 //	    }
         
-        public class menuConsole {
-        	Scanner scanner = new Scanner(System.in);
+
+    	Scanner scanner = new Scanner(System.in);
+    	
+        System.out.println("\nBienvenue dans notre application de gestion d'articles !");
+        System.out.println("1 : Afficher tous les articles sans pagination");
+        System.out.println("2 : Afficher tous les articles avec pagination");
+        System.out.println("*********************\n");
+        System.out.println("3 : Ajouter un article");
+        System.out.println("4 : Afficher un article");
+        System.out.println("5 : Supprimer un article");
+        System.out.println("6 : Modifier un article");
+        System.out.println("*********************\n");
+        System.out.println("7 : Ajouter une catégorie");
+        System.out.println("8 : Afficher une catégorie");
+        System.out.println("9 : Supprimer une catégorie");
+        System.out.println("10 : Mettre à jour une catégorie");
+        System.out.println("11 : Afficher tous les articles d'une catégorie");
+        System.out.println("*********************\n");
+        System.out.println("12 : Sortir du programme");
+        
+        int choice = scanner.nextInt();
+        
+        switch (choice) {
+        case 1:
+//    		articles sans pagination
+            showArticlesWithoutPagination();
+
+            break;
+
+        case 2:
+//          articles avec pagination
+        	showArticlesWithPagination();
+
+            break;
+
+        case 3:
+//        	ajouter un article
+            addArticle(scanner);
         	
-            System.out.println("\nBienvenue dans notre application de gestion d'articles !");
-            System.out.println("1 : Afficher tous les articles sans pagination");
-            System.out.println("2 : Afficher tous les articles avec pagination");
-            System.out.println("*********************");
-            System.out.println("3 : Ajouter un article");
-            System.out.println("4 : Afficher un article");
-            System.out.println("5 : Supprimer un article");
-            System.out.println("6 : Modifier un article");
-            System.out.println("*********************");
-            System.out.println("7 : Ajouter une catégorie");
-            System.out.println("8 : Afficher une catégorie");
-            System.out.println("9 : Supprimer une catégorie");
-            System.out.println("10 : Mettre à jour une catégorie");
-            System.out.println("11 : Afficher tous les articles d'une catégorie");
-            System.out.println("*********************");
-            System.out.println("12 : Sortir du programme");
+            break;
             
-            int choice = scanner.nextInt();
+        case 4:
+//          Afficher un article
+//            displayArticle(scanner);
             
-            switch (choice) {
-            case 1:
-//        		articles sans pagination
-              for (Article article : articleRepository.findAll()) {
-              System.out.println(article.getDescription() + " - " + article.getBrand() + " - " + article.getPrice());
-              }
-                break;
+            break;
+            
+        case 5:
+//          Supprimer un article
+//            deleteArticle(scanner);
+            
+            break;
+            
+        case 6:
+//          Modifier un article
+//            modifyArticle(scanner);
+            
+            break;
 
-            case 2:
-//              articles avec pagination
-        		System.out.println(String.format("%-20s %-20s %-20s %-20s %-20s", "ID", "DESCRIPTION", "MARQUE", "PRIX", "CATEGORIE"));
-                for (Article article2 : articleRepository.findAllByOrderByIdAsc()) {
-                	System.out.println(String.format("%-20d %-20s %-20s %-20.2f %-20s", 
-                	article2.getId(), article2.getDescription(), article2.getBrand(), article2.getPrice(), article2.getCategory().getName()));
+        case 7:
+//          Ajouter une catégorie
+//            addCategory(scanner);
+            
+            break;
+
+        case 8:
+//          Afficher une catégorie
+//            displayCategory(scanner);
+            
+            break;
+
+        case 9:
+//          Supprimer une catégorie
+//            deleteCategory(scanner);
+            
+            break;
+
+        case 10:
+//          Mettre à jour une catégorie
+//            updateCategory(scanner);
+            
+            break;
+
+        case 11:
+//          Afficher tous les articles d'une catégorie
+//        	findArticlesByCategoryName(scanner);
+            
+            break;
+
+        case 12:
+//          Sortir du programme
+            System.out.println("Sortir du programme");
+            
+            break;
+        default:
+        	System.out.println("Option invalide. Veuillez choisir une option valide.");
                 }
-                break;
-
-            case 3:
-                // Ajouter un article
-                addArticle(scanner);
-                break;
-            
         }
-	}
-}
+        
+        private static void showArticlesWithoutPagination() {
+            System.out.println("Affichage des articles sans pagination...");
+            for (Article article : articleRepository.findAll()) {
+            System.out.println(article.getDescription() + " - " + article.getBrand() + " - " + article.getPrice());
+            }
+        }
+        private static void showArticlesWithPagination() {
+    		System.out.println(String.format("%-20s %-20s %-20s %-20s %-20s", "ID", "DESCRIPTION", "MARQUE", "PRIX", "CATEGORIE"));
+            for (Article article2 : articleRepository.findAllByOrderByIdAsc()) {
+            	System.out.println(String.format("%-20d %-20s %-20s %-20.2f %-20s", 
+            	article2.getId(), article2.getDescription(), article2.getBrand(), article2.getPrice(), article2.getCategory().getName()));
+            }
+        }
+        private static void addArticle(Scanner scanner) {
+	        System.out.println("Voulez-vous ajouter un article dans une catégorie existante ? (o/n)");
+	        String answer = scanner.next().toLowerCase();
+	    	if(answer.equals("o")) {
+	    		List<Category> categories = categoryRepository.findAllByOrderByNameAsc();
+	    		
+	    		if(categories.isEmpty()) {
+	    			System.out.println("Aucune catégorie disponible. Merci d'ajouter une catégorie d'abord.");
+	    			
+	    			break;
+	    		}
+	    		
+	    		System.out.println("Choisissez une catégorie parmi les suivantes :");
+	    		for (int i = 0; i < categories.size(); i++) {
+	    			System.out.println((i + 1) + ". " + categories.get(i).getName());
+	    		}
+	    		
+	            int categoryChoice = scanner.nextInt();
+	            
+	            if (categoryChoice >= 1 && categoryChoice <= categories.size()) {
+	                Category selectedCategory = categories.get(categoryChoice - 1);	
+	                System.out.println("Catégorie sélectionnée: " + selectedCategory.getName());
+	            
+	                System.out.println("\tAjouter un nouvel article");
+	                
+	                System.out.print("\nDescription : ");
+	                String description = scanner.next();
+	
+	                System.out.print("\nMarque : ");
+	                String brand = scanner.next();
+	
+	                System.out.print("\nPrix : ");
+	                double price = scanner.nextDouble();
+	                Article newArticle = new Article(description, brand, price, selectedCategory);
+	                articleRepository.save(newArticle);
+	                System.out.println("Article ajouté avec succès !");
+	            } else {
+	                System.out.println("Merci d'entrer un choix valide. Retour au menu.");
+	            }
+	    	
+	    } else {
+	    }
+            scanner.close();
+	        }
+
